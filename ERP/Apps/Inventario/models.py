@@ -81,7 +81,7 @@ class Producto(models.Model):
 	RUTAS_CHOICES = (
 		('MTO' , 'Obtener Bajo Pedido (MTO)'),
 		)
-	rutas = models.CharField(max_length=255, choices=RUTAS_CHOICES, default='MTO')
+	rutas = models.CharField(max_length=255, choices=RUTAS_CHOICES, default='MTO', blank=True, null=True)
 	plazo_entrega_cliente = models.PositiveIntegerField(default=0)
 	ubicacion_produccion = models.ForeignKey(Ubicaciones, null=True, blank=True, on_delete=models.SET_NULL, related_name='ubicacion_produccion')
 	ubicacion_inventario = models.ForeignKey(Ubicaciones, null=True, blank=True, on_delete=models.SET_NULL, related_name='ubicacion_inventario')
@@ -90,3 +90,4 @@ class Producto(models.Model):
 	responsable = models.CharField(max_length=255, null=True, blank=True)
 	descripcion_pedido_entrega = models.TextField(null=True, blank=True)
 	descripcion_recepciones = models.TextField(null=True, blank=True)
+	foto = models.ImageField(upload_to='fotos/producto/', null=True, blank=True)
