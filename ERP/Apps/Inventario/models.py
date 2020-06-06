@@ -94,6 +94,11 @@ class Ubicaciones(models.Model):
 
 	def __str__(self):
 		return self.nombre_ubicacion
+class Opciones_Rutas(models.Model):
+	nombre = models.CharField(max_length=255)
+
+	def __str__(self):
+		return self.nombre
 
 class Producto(models.Model):
 	nombre_producto = models.CharField(max_length=255)
@@ -110,10 +115,7 @@ class Producto(models.Model):
 	precio_venta = models.DecimalField(max_digits=10, decimal_places=2)
 	coste = models.DecimalField(max_digits=10, decimal_places=2)
 	notas_internas = models.TextField(null=True, blank=True)
-	RUTAS_CHOICES = (
-		('MTO' , 'Obtener Bajo Pedido (MTO)'),
-		)
-	rutas = models.BooleanField(max_length=255, choices=RUTAS_CHOICES)
+	rutas = models.ManyToManyField(Opciones_Rutas, blank=True)
 	plazo_entrega_cliente = models.PositiveIntegerField(default=0)
 	ubicacion_produccion = models.ForeignKey(Ubicaciones, null=True, blank=True, on_delete=models.SET_NULL, related_name='ubicacion_produccion')
 	ubicacion_inventario = models.ForeignKey(Ubicaciones, null=True, blank=True, on_delete=models.SET_NULL, related_name='ubicacion_inventario')
@@ -123,7 +125,6 @@ class Producto(models.Model):
 	descripcion_pedido_entrega = models.TextField(null=True, blank=True)
 	descripcion_recepciones = models.TextField(null=True, blank=True)
 	foto = models.ImageField(upload_to='fotos/producto/', null=True, blank=True)
-
 	class Meta:
 		verbose_name = "Producto"
 		verbose_name_plural = "Productos"
