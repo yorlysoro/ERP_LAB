@@ -6,6 +6,10 @@ class Almacen(models.Model):
 	nombre_corto = models.CharField(max_length=10)
 	direccion = models.CharField(max_length=255, blank=True, null=True)
 
+	class Meta:
+		verbose_name = "Almacen"
+		verbose_name_plural = "Almacenes"
+
 class Secuencia_Referencia(models.Model):
 	IMPLEMENTACIONES = (
 		('Sd' ,'Estandar'), 
@@ -20,6 +24,10 @@ class Secuencia_Referencia(models.Model):
 	tamano_secuencia = models.PositiveIntegerField(default=0)
 	paso = models.PositiveIntegerField(default=1)
 	proximo_numero = models.PositiveIntegerField(default=0)
+
+	class Meta:
+		verbose_name = "Secuencia de Referencia"
+		verbose_name_plural = "Secuencias de Referencia"
 
 class Tipo_Operacion(models.Model):
 	TIPO_OPERACION_CHOICES = (
@@ -36,6 +44,10 @@ class Tipo_Operacion(models.Model):
 	to_devoluciones_recibo = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
 	precompletar_op_detalladas_recibo = models.BooleanField(default=True)
 
+	class Meta:
+		verbose_name = "Tipo de Operacion"
+		verbose_name_plural = "Tipos de Operaciones"
+
 class Categoria_Producto(models.Model):
 	LOGISTICA_CHOICES = (
 	('nulo' , ''), 
@@ -45,6 +57,10 @@ class Categoria_Producto(models.Model):
 	nombre_categoria = models.CharField(max_length=255)
 	categoria_padre = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
 	logistica = models.CharField(max_length=255, null=True, blank=True, choices=LOGISTICA_CHOICES, default='nulo')
+
+	class Meta:
+		verbose_name = "Categoria de Producto"
+		verbose_name_plural = "Categorias de Productos"
 
 class Ubicaciones(models.Model):
 	nombre_ubicacion = models.CharField(max_length=255)
@@ -62,6 +78,9 @@ class Ubicaciones(models.Model):
 	ubicacion_chatarra = models.BooleanField(default=False)
 	ubicacion_devolucion = models.BooleanField(default=False)
 	nota = models.TextField(null=True, blank=True)
+	class Meta:
+		verbose_name = "Ubicacion"
+		verbose_name_plural = "Ubicaciones"
 
 class Producto(models.Model):
 	nombre_producto = models.CharField(max_length=255)
@@ -91,3 +110,7 @@ class Producto(models.Model):
 	descripcion_pedido_entrega = models.TextField(null=True, blank=True)
 	descripcion_recepciones = models.TextField(null=True, blank=True)
 	foto = models.ImageField(upload_to='fotos/producto/', null=True, blank=True)
+
+	class Meta:
+		verbose_name = "Producto"
+		verbose_name_plural = "Productos"
