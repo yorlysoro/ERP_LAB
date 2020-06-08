@@ -13,7 +13,7 @@ TIPO_DIRECCION_CHOICE = (
 		('priv', 'Direccion Privada'),
 		)
 class Compania(models.Model):
-	tipo_contacto_choice = models.CharField(max_length=255, choices=TIPO_CONTACTO_CHOICE, default='Ind')
+	#tipo_contacto_choice = models.CharField(max_length=255, choices=TIPO_CONTACTO_CHOICE, default='Ind')
 	nombre = models.CharField(max_length=255)
 	direccion = models.CharField(max_length=255, null=True, blank=True)
 	rif = models.CharField(max_length=30, null=True, blank=True)
@@ -23,12 +23,20 @@ class Compania(models.Model):
 	pagina = models.URLField(null=True, blank=True)
 	foto = models.ImageField(upload_to='fotos/contacto/', null=True, blank=True)
 
+	class Meta:
+		verbose_name = "Compañia"
+		verbose_name_plural = "Compañias"
+
 	def __str__(self):
 		return self.nombre
 
 class Titulo(models.Model):
 	titulo = models.CharField(max_length=255)
 	abreviatura = models.CharField(max_length=10, null=True, blank=True)
+
+	class Meta:
+		verbose_name = "Titulo"
+		verbose_name_plural = "Titulos"
 
 	def __str__(self):
 		return self.titulo
@@ -40,6 +48,9 @@ class Individual(Compania):
 	titulo = models.ForeignKey(Titulo, blank=True, null=True, on_delete=models.SET_NULL)
 	compania = models.ForeignKey(Compania, blank=True, null=True, on_delete=models.SET_NULL, related_name='relacion_compania')
 
+	class Meta:
+		verbose_name = "Individual"
+		verbose_name_plural = "Individual"
 	def __str__(self):
 		if self.compania:
 			return self.compania.nombre + ' ' + self.nombre
