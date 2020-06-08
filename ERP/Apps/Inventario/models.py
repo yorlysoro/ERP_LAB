@@ -1,5 +1,5 @@
 from django.db import models
-
+from Apps.Contacto.models import Individual
 # Create your models here.
 class Almacen(models.Model):
 	almacen = models.CharField(max_length=255)
@@ -131,3 +131,16 @@ class Producto(models.Model):
 
 	def __str__(self):
 		return self.nombre_producto
+
+class Recepcion(models.Model):
+	recibir = models.ForeignKey(Individual, null=True, blank=True, on_delete=models.SET_NULL)
+	tipo_operacion = models.ForeignKey(Tipo_Operacion, on_delete=models.CASCADE)
+	fecha_programada = models.DateTimeField()
+	documento_origen = models.CharField(max_length=255, null=True, blank=True)
+	producto = models.ForeignKey(Producto, null=True, blank=True, on_delete=models.SET_NULL)
+
+	class Meta:
+		verbose_name = "Recepcion"
+		verbose_name_plural = "Recepciones"
+	def __str__(self):
+		return self.id
