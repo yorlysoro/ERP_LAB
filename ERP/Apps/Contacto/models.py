@@ -12,6 +12,18 @@ TIPO_DIRECCION_CHOICE = (
 		('otr', 'Otra Direccion'),
 		('priv', 'Direccion Privada'),
 		)
+
+class Sector(models.Model):
+	nombre = models.CharField(max_length=40)
+	nombre_completo = models.CharField(max_length=255, null=True, blank=True)
+	activo = models.BooleanField(default=True)
+
+	class Meta:
+		verbose_name = "Sector"
+		verbose_name_plural = "Sectores"
+	def __str__(self):
+		return self.nombre
+
 class Compania(models.Model):
 	#tipo_contacto_choice = models.CharField(max_length=255, choices=TIPO_CONTACTO_CHOICE, default='Ind')
 	nombre = models.CharField(max_length=255)
@@ -22,7 +34,8 @@ class Compania(models.Model):
 	correo = models.EmailField(null=True, blank=True)
 	pagina = models.URLField(null=True, blank=True)
 	foto = models.ImageField(upload_to='fotos/contacto/', null=True, blank=True)
-
+	sector = models.ForeignKey(Sector, null=True, blank=True, on_delete=models.SET_NULL)
+	nota_interna = models.TextField(null=True, blank=True)
 	class Meta:
 		verbose_name = "Compañia"
 		verbose_name_plural = "Compañias"
