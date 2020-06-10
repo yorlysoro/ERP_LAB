@@ -137,7 +137,7 @@ class Recepcion(models.Model):
 	tipo_operacion = models.ForeignKey(Tipo_Operacion, on_delete=models.CASCADE)
 	fecha_programada = models.DateTimeField()
 	documento_origen = models.CharField(max_length=255, null=True, blank=True)
-	producto = models.ForeignKey(Producto, null=True, blank=True, on_delete=models.SET_NULL)
+	producto = models.ManyToManyField(Producto, blank=True)
 
 	class Meta:
 		verbose_name = "Recepcion"
