@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 TIPO_CONTACTO_CHOICE = (
@@ -36,6 +39,7 @@ class Compania(models.Model):
 	foto = models.ImageField(upload_to='fotos/contacto/', null=True, blank=True)
 	sector = models.ForeignKey(Sector, null=True, blank=True, on_delete=models.SET_NULL)
 	nota_interna = models.TextField(null=True, blank=True)
+	usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
 	class Meta:
 		verbose_name = "Compañia"
 		verbose_name_plural = "Compañias"
@@ -69,3 +73,8 @@ class Individual(Compania):
 			return self.compania.nombre + ' ' + self.nombre
 		else:
 			return self.nombre
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Compania.objects.create(usuario=instance)

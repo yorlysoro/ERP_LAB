@@ -125,6 +125,7 @@ class Producto(models.Model):
 	descripcion_pedido_entrega = models.TextField(null=True, blank=True)
 	descripcion_recepciones = models.TextField(null=True, blank=True)
 	foto = models.ImageField(upload_to='fotos/producto/', null=True, blank=True)
+	categoria = models.ForeignKey(Categoria_Producto, null=True, blank=True, on_delete=models.SET_NULL)
 	class Meta:
 		verbose_name = "Producto"
 		verbose_name_plural = "Productos"
