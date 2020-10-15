@@ -33,80 +33,8 @@
 #  
 from django.db import models
 from Apps.Contacto.models import Individual, Compania
+from .constantes import *
 # Create your models here.
-
-LOGISTICA_CHOICES = ( 
-('FIFO' , 'First In First Out (FIFO)'), 
-('LIFO' , 'Last In First Out (LIFO)'),
-)
-ESTADO_RECEPCION = (
-	('Bor', 'Borrador'),
-	('Esp', 'En Espera'),
-	('Rea', 'Realizado'),
-	)
-TIPO_UBICACION_CHOICES = ( 
-		('Up' , 'Ubicacion de Proveedor'), 
-		('V' , 'Vista'), 
-		('Ui' , 'Ubicacion Interna'), 
-		('Uc' , 'Ubicacion del Cliente'), 
-		('Pi' , 'Perdida de Inventario'), 
-		('Pr' , 'Produccion'), 
-		('Ut' , 'Ubicacion de Transito'),
-		)
-
-IMPLEMENTACIONES = (
-	('Sd' ,'Estandar'), 
-	('Sh', 'Sin Hueco'),
-)
-
-TIPO_OPERACION_CHOICES = ( 
-		('En' , 'Envio'), 
-		('Re' , 'Recibo'), 
-		('Ti' , 'Transferencia Interna'),
-		)
-
-TIPO_PRODUCTO_CHOICES = (
-		('Co' , 'Consumible'), 
-		('Se' , 'Servicio'), 
-		('Al' , 'Almacenable'),
-		)
-
-TIPO_UNIDAD_MEDIDA = (
-	('1', 'Mas grande que la unidad de medida de referencia'),
-	('2', 'Unidad de medida de referencia para esta categoria'),
-	('3', 'Mas pequeña que la unidad de medida de referencia'),
-	)
-
-ALBARANES_ENTRADA = (
-	('1', 'Recibir bienes directamente (1 paso)'),
-	('2', 'Recibir bienes en la ubicación de entrada y luego llevar a existencias (2 pasos)'),
-	('3', 'Recibir bienes en la ubicación de entrada, transferir a ubicación de control de calidad, y luego llevar a existencias (3 pasos)'),
-	)
-
-ENVIOS_SALIENTES = (
-	('1', 'Entregar bienes directamente (1 paso)' ),
-	('2', 'Enviar bienes a ubicación de salida y entregar (2 pasos)'),
-	('3', 'Empaquetar, transferir bienes a ubicación de salida, y enviar (3 pasos)'),
-	)
-
-ACCIONES_REGLAS = (
-	('1', 'Obtener desde'),
-	('2', 'Empujar A'),
-	('3', 'Jalar & Empujar'),
-	('4', 'Comprar'),
-	)
-
-MA_CHOICES = (
-	('1', 'Operacion Manual'),
-	('2', 'Automatico paso no añadido'),
-	)
-
-MS_CHOICES = (
-	('1', 'Obtene del Stock'),
-	('2', 'Activa otra regla'),
-	('3', 'Tomar de almacen, si no esta disponible, active otra regla'),
-	)
-
 class Almacen(models.Model):
 	almacen = models.CharField(max_length=255)
 	nombre_corto = models.CharField(max_length=10)
@@ -265,9 +193,23 @@ class Recepcion(models.Model):
 		verbose_name_plural = "Recepciones"
 	def __str__(self):
 		return self.id
-class Rutas(models.Model):
-	pass
 
+
+class Rutas(models.Model):
+	ruta = models.CharField(max_length=255)
+	compania = models.ForeignKey(Compania, null=True, blank=True, on_delete=models.SET_NULL)
+	categoria_producto = models.BooleanField(default=False)
+	productos = models.BooleanField(default=True)
+	almacenes = models.BooleanField(default=False)
+	linea_pedido_ventas = models.BooleanField(default=False)
+	reglas = models.ManyToManyField('Reglas', blank=True, related_name='rutas_reglas')
+
+
+	class Meta:
+		verbose_name = "Ruta"
+		verbose_name_plural = "Rutas"
+	def __str__(self):
+		return self.ruta
 
 
 class Reglas(models.Model):
@@ -278,12 +220,69 @@ class Reglas(models.Model):
 	ubicacion_destino = models.ForeignKey(Ubicaciones, blank=True, null=True, on_delete=models.SET_NULL, related_name='ubicacion_reglas_destino')
 	movimiento_automatico = models.CharField(max_length=255, choices=MA_CHOICES, default='1')
 	metodo_suministro = models.CharField(max_length=255, choices=MS_CHOICES, default='1')
-	ruta = models.ForeignKey(Rutas, blank=True, null=True, on_delete=models.SET_NULL)
+	ruta = models.ForeignKey(Rutas, blank=True, null=True, on_delete=models.SET_NULL, related_name='reglas_rutas')
 	compania = models.ForeignKey(Compania, blank=True, null=True, on_delete=models.SET_NULL)
 	plazo_entrega = models.PositiveIntegerField(default=0)
 
 	class Meta:
-		verbose_name = "Recepcion"
-		verbose_name_plural = "Recepciones"
+		verbose_name = "Regla"
+		verbose_name_plural = "Reglas"
 	def __str__(self):
-		return self.id
+		return self.nombre
+
+class ReglasEstrategiaTraslado(models.Model):
+	producto = models.ForeignKey(Producto, null=True, blank=True, on_delete=models.SET_NULL)
+	categoria = models.ForeignKey(Categoria_Producto, null=True, blank=True, on_delete=models.SET_NULL)
+	entrada = models.ForeignKey(Ubicaciones, on_delete=models.CASCADE, related_name='RET_Ubicaciones_E')
+	salida = models.ForeignKey(Ubicaciones, on_delete=models.CASCADE, related_name='RET_Ubicaciones_S')
+	compania = models.ForeignKey(Compania, on_delete=models.CASCADE)
+
+	class Meta:
+		verbose_name = "Regla de Estrategia de Traslado"
+		verbose_name_plural = "Reglas de Estrategias de Traslados"
+	def __str__(self):
+		return self.producto.nombre
+
+
+class ReglasAbastecimiento(models.Model):
+	producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+	ubicacion = models.ForeignKey(Ubicaciones, on_delete=models.CASCADE)
+	cantidad_minima = models.DecimalField(max_digits=10, decimal_places=2)
+	cantidad_maxima = models.DecimalField(max_digits=10, decimal_places=2)
+	cantidad_multi = models.DecimalField(max_digits=10, decimal_places=2)
+	udm = models.ForeignKey(Unidades_Medida, on_delete=models.CASCADE)
+
+	class Meta:
+		verbose_name = "Regla de Abastecimiento"
+		verbose_name_plural = "Reglas de Abastecimiento"
+	def __str__(self):
+		return self.producto.nombre
+
+class EmpaquetadoProducto(models.Model):
+	empaquetado = models.CharField(max_length=255)
+	producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+	cantidad_contenida = models.DecimalField(max_digits=10, decimal_places=2)
+	codigo_barras = models.CharField(max_length=255, null=True, blank=True)
+	compania = models.ForeignKey(Compania, null=True, blank=True, on_delete=models.SET_NULL)
+
+	class Meta:
+		verbose_name = "Empaquetado de Producto"
+		verbose_name_plural = "Empaquetados de Productos"
+	def __str__(self):
+		return self.empaquetado
+
+class PaqueteEntrega(models.Model):
+	tipo_paquete = models.CharField(max_length=255)
+	transportista = models.CharField(max_length=255, choices=TRANSPORTISTA_LIST, default='1')
+	altura = models.DecimalField(max_digits=10, decimal_places=2)
+	ancho = models.DecimalField(max_digits=10, decimal_places=2)
+	longitud = models.DecimalField(max_digits=10, decimal_places=2)
+	peso_maximo = models.DecimalField(max_digits=10, decimal_places=2)
+	codigo_barras = models.CharField(max_length=255, null=True, blank=True)
+	codigo_paquete = models.CharField(max_length=255, null=True, blank=True)
+
+	class Meta:
+		verbose_name = "Paquete de Entrega"
+		verbose_name_plural = "Paquetes de Entrega"
+	def __str__(self):
+		return self.tipo_paquete
