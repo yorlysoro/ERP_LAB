@@ -62,7 +62,7 @@ class Sector(models.Model):
 		return self.nombre
 
 class Compania(models.Model):
-	#tipo_contacto_choice = models.CharField(max_length=255, choices=TIPO_CONTACTO_CHOICE, default='Ind')
+	tipo_contacto_choice = models.CharField(max_length=255, choices=TIPO_CONTACTO_CHOICE, default='Ind')
 	nombre = models.CharField(max_length=255)
 	direccion = models.CharField(max_length=255, null=True, blank=True)
 	rif = models.CharField(max_length=30, null=True, blank=True)

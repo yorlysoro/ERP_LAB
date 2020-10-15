@@ -34,6 +34,10 @@
 from django.db import models
 from Apps.Contacto.models import Individual
 # Create your models here.
+LOGISTICA_CHOICES = ( 
+('FIFO' , 'First In First Out (FIFO)'), 
+('LIFO' , 'Last In First Out (LIFO)'),
+)
 class Almacen(models.Model):
 	almacen = models.CharField(max_length=255)
 	nombre_corto = models.CharField(max_length=10)
@@ -90,10 +94,6 @@ class Tipo_Operacion(models.Model):
 		return self.tipo_de_operacion
 
 class Categoria_Producto(models.Model):
-	LOGISTICA_CHOICES = ( 
-	('FIFO' , 'First In First Out (FIFO)'), 
-	('LIFO' , 'Last In First Out (LIFO)'),
-	)
 	nombre_categoria = models.CharField(max_length=255)
 	categoria_padre = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
 	logistica = models.CharField(max_length=255, null=True, blank=True, choices=LOGISTICA_CHOICES)
@@ -121,6 +121,7 @@ class Ubicaciones(models.Model):
 	ubicacion_chatarra = models.BooleanField(default=False)
 	ubicacion_devolucion = models.BooleanField(default=False)
 	nota = models.TextField(null=True, blank=True)
+	estrategia_retirada = models.CharField(max_length=255, null=True, blank=True, choices=LOGISTICA_CHOICES)
 	class Meta:
 		verbose_name = "Ubicacion"
 		verbose_name_plural = "Ubicaciones"
@@ -154,7 +155,7 @@ class Producto(models.Model):
 	ubicacion_inventario = models.ForeignKey(Ubicaciones, null=True, blank=True, on_delete=models.SET_NULL, related_name='ubicacion_inventario')
 	peso = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
 	volumen = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
-	responsable = models.CharField(max_length=255, null=True, blank=True)
+	responsable = models.ForeignKey(Individual, null=True, blank=True, on_delete=models.CASCADE)
 	descripcion_pedido_entrega = models.TextField(null=True, blank=True)
 	descripcion_recepciones = models.TextField(null=True, blank=True)
 	foto = models.ImageField(upload_to='fotos/producto/', null=True, blank=True)
@@ -172,6 +173,7 @@ class Recepcion(models.Model):
 	fecha_programada = models.DateTimeField()
 	documento_origen = models.CharField(max_length=255, null=True, blank=True)
 	producto = models.ManyToManyField(Producto, blank=True)
+	nota = models.TextField(null=True, blank=True)
 
 	class Meta:
 		verbose_name = "Recepcion"
