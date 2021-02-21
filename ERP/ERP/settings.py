@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'admin_honeypot',
     'honeypot',
     'defender',
+    
+    #Owner
+    'APPS.base',
 ]
 
 REST_FRAMEWORK = {
@@ -78,7 +81,7 @@ ROOT_URLCONF = 'ERP.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
