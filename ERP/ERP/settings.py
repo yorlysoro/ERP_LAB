@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+from dotenv import load_dotenv, find_dotenv
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,7 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^l5tv4o$%d^wtm6+6e__mnwl3wh_w+el+_e%g6)*lh=qu@^^&m'
+
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -111,12 +112,12 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
     'default': {
-        'NAME': 'ERP_LAB',
+        'NAME': os.environ['DJANGO_DATABASE'],
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT':5432
+        'USER': os.environ['DJANGO_PSQL_USER'],
+        'PASSWORD': os.environ['DJANGO_PSQL_PASSWORD'],
+        'HOST': os.environ['HOST_IP'],
+        'PORT': os.environ['PORT'],
     },
 }
 
