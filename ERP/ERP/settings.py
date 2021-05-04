@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
+load_dotenv(find_dotenv())
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'admin_honeypot',
     'honeypot',
-    'defender',
+    #'defender',
     
     #Owner
     'APPS.base',
@@ -73,7 +73,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #Third Party
-    'defender.middleware.FailedLoginMiddleware',
+    #'defender.middleware.FailedLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'ERP.urls'

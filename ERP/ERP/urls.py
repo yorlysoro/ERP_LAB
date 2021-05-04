@@ -22,5 +22,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('auth/', include('rest_auth.urls')),
     path('auth/registration/', include('rest_auth.registration.urls')),
-    path('secret/defender/', include('defender.urls')), # defender admin
+    #path('secret/defender/', include('defender.urls')), # defender admin
 ]
