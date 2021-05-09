@@ -57,7 +57,6 @@ class State(BaseModel):
 class Currency(BaseModel):
     name = models.CharField(max_length=255)
     symbol = models.CharField(max_length=50)
-    active = models.BooleanField(default=True)
     historical = HistoricalRecords()
 
     @property
@@ -127,7 +126,6 @@ class Bank(BaseModel):
     country = models.ForeignKey('Country', related_name='BaknCountry', blank=True, null=True, on_delete=models.SET_NULL)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
-    active = models.BooleanField(default=True)
     bic = models.CharField(max_length=255, blank=True, null=True)
     historical = HistoricalRecords()
 
@@ -148,7 +146,6 @@ class Bank(BaseModel):
 
 
 class PartnerBank(BaseModel):
-    active = models.BooleanField(default=True)
     acc_type = models.ForeignKey('Bank', related_name='ParterBankBank', on_delete=models.CASCADE)
     acc_number = models.CharField(max_length=255)
     partner = models.ForeignKey('Partner', related_name='PartnerBank', on_delete=models.CASCADE)
@@ -180,7 +177,6 @@ class PartnerCategory(BaseModel):
     name = models.CharField(max_length=255)
     parent = models.ForeignKey('PartnerCategory', related_name='ParentPartnerCategory', blank=True, null=True,
                                on_delete=models.SET_NULL)
-    active = models.BooleanField(default=True)
     partner = models.ManyToManyField('Partner')
     historical = HistoricalRecords()
 
@@ -241,7 +237,6 @@ class Partner(BaseModel):
     website = models.URLField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
     category = models.ManyToManyField('PartnerCategory', blank=True, related_name='PartnerCategory')
-    active = models.BooleanField(default=True)
     employee = models.BooleanField(default=False)
     function = models.CharField(max_length=255, blank=True, null=True)
     street = models.CharField(max_length=255, blank=True, null=True)
