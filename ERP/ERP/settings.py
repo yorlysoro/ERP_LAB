@@ -50,10 +50,12 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'admin_honeypot',
     'honeypot',
+    'simple_history',
     #'defender',
     
     #Owner
     'APPS.base',
+    'APPS.contacts',
 ]
 
 REST_FRAMEWORK = {
@@ -74,6 +76,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #Third Party
     #'defender.middleware.FailedLoginMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'ERP.urls'
@@ -105,9 +108,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'other': {
