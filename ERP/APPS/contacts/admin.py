@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from APPS.contacts.models import (Country, State, Currency,
                     Company, Bank, PartnerBank,
                     PartnerCategory, PartnerTitle, Partner,
-                    Lang, Users)
+                    Lang, Users, CountryGroup, PartnerIndustry)
 
 class UsersAdminInline(admin.StackedInline):
     model = Users
@@ -25,3 +25,5 @@ admin.site.register(PartnerTitle)
 admin.site.register(Partner)
 admin.site.register(Lang)
 admin.site.register(User, UserAdmin)
+admin.site.register(CountryGroup)
+admin.site.register(PartnerIndustry)
