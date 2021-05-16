@@ -1,3 +1,3 @@
 #ERP_LAB
 
-Repositorio para practicas de ERP
+Repository for practices in django-web-framework
