@@ -84,7 +84,7 @@ ROOT_URLCONF = 'ERP.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR, ],
+        'DIRS': ['APPS/templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -110,7 +110,7 @@ AUTHENTICATION_BACKENDS = [
 
 
 DATABASES = {
-    'other': {
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
