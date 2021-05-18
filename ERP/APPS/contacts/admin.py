@@ -2,16 +2,20 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 from APPS.contacts.models import (Country, State, Currency,
-                    Company, Bank, PartnerBank,
-                    PartnerCategory, PartnerTitle, Partner,
-                    Lang, Users, CountryGroup, PartnerIndustry)
+                                  Company, Bank, PartnerBank,
+                                  PartnerCategory, PartnerTitle, Partner,
+                                  Lang, Users, CountryGroup, PartnerIndustry)
+
 
 class UsersAdminInline(admin.StackedInline):
     model = Users
     can_delete = False
     verbose_name_plural = 'User'
+
+
 class UserAdmin(BaseUserAdmin):
     inlines = (UsersAdminInline,)
+
 
 admin.site.unregister(User)
 admin.site.register(Country)

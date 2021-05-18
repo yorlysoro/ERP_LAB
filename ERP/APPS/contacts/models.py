@@ -259,12 +259,14 @@ class Partner(BaseModel):
                               on_delete=models.SET_NULL)
     parent = models.ForeignKey('Partner', related_name='ParentPartner', blank=True, null=True,
                                on_delete=models.SET_NULL)
-    child_ids = models.ForeignKey('Partner', related_name='ChildPartner', blank=True, null=True, on_delete=models.SET_NULL)
-    lang = models.ForeignKey('Lang', related_name='PartnerLang', blank=True, null=True, on_delete=models.SET_NULL)
+    child_ids = models.ForeignKey('Partner', related_name='ChildPartner', blank=True,
+                                  null=True, on_delete=models.SET_NULL)
+    lang = models.ForeignKey('Lang', related_name='PartnerLang', blank=True,
+                             null=True, on_delete=models.SET_NULL)
     vat = models.CharField(max_length=255, blank=True, null=True)
     ref = models.CharField(max_length=255, blank=True, null=True)
-    bank = models.ForeignKey('PartnerBank', related_name='PartnerBankRel', blank=True, null=True,
-                             on_delete=models.SET_NULL)
+    bank = models.ForeignKey('PartnerBank', related_name='PartnerBankRel', blank=True,
+                             null=True, on_delete=models.SET_NULL)
     website = models.URLField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
     category = models.ManyToManyField('PartnerCategory', blank=True, related_name='PartnerCategory')
@@ -283,7 +285,7 @@ class Partner(BaseModel):
     type = models.CharField(max_length=255, blank=True, null=True, choices=COMPANY_TYPE)
     industry = models.ForeignKey('PartnerIndustry', related_name='PartnerIndustry', blank=True, null=True,
                                  on_delete=models.SET_NULL)
-    company_type = models.CharField( 'Company type', max_length=255, choices=COMPANY_TYPE)
+    company_type = models.CharField('Company type', max_length=255, choices=COMPANY_TYPE)
     is_company = models.BooleanField('Is company', default=False)
     user = models.OneToOneField('Users', related_name='PartnerUser', blank=True, null=True, on_delete=models.DO_NOTHING)
     historical = HistoricalRecords()
