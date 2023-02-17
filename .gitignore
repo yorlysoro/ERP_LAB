@@ -336,3 +336,5 @@ fabric.properties
 ERP/APPS/*/migrations/
 env/
 venv/
+.idea/*
+.vscode/*
