@@ -1,4 +1,17 @@
 {
+    
     "python.linting.enabled": true,
-    "python.linting.lintOnSave": true
+    "python.linting.lintOnSave": true,
+    "python.linting.mypyEnabled": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoImportUserSymbols": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.defaultInterpreterPath": "/home/yorlys/miniconda3/envs/erp_lab/bin/python",
+    "python.formatting.autopep8Path": "/home/yorlys/miniconda3/envs/erp_lab/bin/autopep8",
+    "python.linting.flake8Path": "/home/yorlys/miniconda3/envs/erp_lab/bin/flake8",
+    "python.linting.mypyPath": "/home/yorlys/miniconda3/envs/erp_lab/bin/mypy",
+    "python.linting.pylintPath": "/home/yorlys/miniconda3/envs/erp_lab/bin/pylint",
+    "python.testing.pytestPath": "/home/yorlys/miniconda3/envs/erp_lab/bin/pytest",
+    "editor.tabCompletion": "on",
+    "diffEditor.codeLens": true
 }

@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
-    #Third Party
+
+    # Third Party
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -48,12 +48,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'rest_auth.registration',
-    'admin_honeypot',
+    # 'admin_honeypot',
     'honeypot',
     'simple_history',
-    #'defender',
-    
-    #Owner
+    # 'defender',
+
+    # Owner
     'APPS.base',
     'APPS.contacts',
 ]
